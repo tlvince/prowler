@@ -33,10 +33,8 @@ action()
 
 [ -f "$CONFIG" ] && . "$CONFIG"
 
-inotifywait -qm --format '%f' -e create "$HOME" | while read file; do
-    if $(grep -Fq "$file" "$WATCH_FILES"); then
+inotifywait -qm --format '%f' -e create "$HOME" | grep --line-buffered -x -f "$WATCH_FILES" | while read file; do
         rm -rf "$HOME/$file"
         #echo "$(date +"%F %R") :: Deleted $HOME/$file" >> $LOG
         action "$HOME/$file" &
-    fi
 done

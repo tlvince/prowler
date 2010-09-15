@@ -1,26 +1,35 @@
 Prowler
--------
+=======
 
-Delete unwanted files that otherwise pollute $HOME. Read more about it here:
+Delete unwanted files that otherwise pollute `$HOME`. Read more about it here:
 [prowler: an inotify based home directory cleaner][prowler].
 
-### Setup
+Dependencies
+------------
 
-1. Create a *badfiles* file containing the files and directories that you want
+* inotify-tools
+
+Setup
+-----
+
+1. Create a *watchfiles* file containing the files and directories that you want
    to be tracked:
    
-        echo Desktop >> ~/.config/prowler/badfiles
+        $ echo Desktop >> ~/.config/prowler/watchfiles
 
-2. Before running `prowler` for the first time, make sure the *badfiles* are
+2. Before running `prowler` for the first time, make sure the *watchfiles* are
    already deleted:
 
-        rm -rf ~/`cat ~/.config/prowler/badfiles`
+        $ rm -rf ~/`cat ~/.config/prowler/watchfiles`
 
-3. Run `prowler` and check the log to see if it's working:
+3. Run `prowler`
 
-        ./prowler &
-        mkdir ~/Desktop
-        $ cat ~/.cache/prowler.log
-        2010-07-06 00:47 :: Deleted /home/tom/Desktop
+        $ ./prowler &
+        $ mkdir ~/Desktop
+        $ ls ~/Desktop
+        ls: cannot access Desktop: No such file or directory
+
+Optionally define an action that should occur when an inotify event is thrown.
+See `examples/config` for details.
 
   [prowler]: http://www.tlvince.com/linux/prowler-home-cleaner/

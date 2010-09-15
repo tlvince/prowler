@@ -1,0 +1,26 @@
+Prowler
+-------
+
+Delete unwanted files that otherwise pollute $HOME. Read more about it here:
+[prowler: an inotify based home directory cleaner][prowler].
+
+### Setup
+
+1. Create a *badfiles* file containing the files and directories that you want
+   to be tracked:
+   
+        echo Desktop >> ~/.config/prowler/badfiles
+
+2. Before running `prowler` for the first time, make sure the *badfiles* are
+   already deleted:
+
+        rm -rf ~/`cat ~/.config/prowler/badfiles`
+
+3. Run `prowler` and check the log to see if it's working:
+
+        ./prowler &
+        mkdir ~/Desktop
+        $ cat ~/.cache/prowler.log
+        2010-07-06 00:47 :: Deleted /home/tom/Desktop
+
+  [prowler]: http://www.tlvince.com/linux/prowler-home-cleaner/

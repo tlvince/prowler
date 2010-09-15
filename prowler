@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 # prowler: delete unwanted files that otherwise pollute $HOME
 #
@@ -20,7 +20,7 @@
 CONF_DIR="${XDG_CONFIG_HOME:-"$HOME/.config"}/prowler"
 WATCH_FILES="$CONF_DIR/watchfiles"
 CONFIG="$CONF_DIR/config"
-#LOG="${XDG_CACHE_HOME:-"$HOME/.cache"}/${0##*/}.log"
+#LOG="${XDG_CACHE_HOME:-"$HOME/.cache"}/prowler.log"
 
 ##
 # User definable action when inotify event occurs.
@@ -31,7 +31,7 @@ action()
     return
 }
 
-[[ -f "$CONFIG" ]] && . "$CONFIG"
+[ -f "$CONFIG" ] && . "$CONFIG"
 
 inotifywait -qm --format '%f' -e create "$HOME" | while read file; do
     if $(grep -Fq "$file" "$WATCH_FILES"); then

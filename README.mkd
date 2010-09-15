@@ -29,7 +29,15 @@ Setup
         $ ls ~/Desktop
         ls: cannot access Desktop: No such file or directory
 
-Optionally define an action that should occur when an inotify event is thrown.
-See `examples/config` for details.
+4. Optional `before_rm` hook:
+
+	$ EDITOR ${XDG_CONFIG_HOME:-"$HOME/.config"}/prowler/config
+
+	By defining a `before_rm` function you can inform yourself before
+	the actual removal takes place or allow yourself to intervene.
+	The call to this function is synchronous,
+	and if you don't return 0 the rm will abort.
+
+In the `examples` directory, you'll find a sample config and watchfiles file.
 
   [prowler]: http://www.tlvince.com/linux/prowler-home-cleaner/

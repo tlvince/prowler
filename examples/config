@@ -1,9 +1,9 @@
 ##
 # User definable action when inotify event occurs.
 #
-# @param $1 string  The path to a triggering file.
+# @param $1 string  The path to a triggering file, relative to home
 #
-action()
+before_rm()
 {
-    zenity --info --text="inotify event caught from:\n\n$1"
+    zenity --info --text="inotify event caught for:\n\n$1"
 }

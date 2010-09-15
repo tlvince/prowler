@@ -26,7 +26,7 @@ CONFIG="$CONF_DIR/config"
 # User definable action when inotify event occurs.
 # Override in $CONFIG
 #
-action()
+before_rm ()
 {
     return
 }
@@ -34,7 +34,6 @@ action()
 [ -f "$CONFIG" ] && . "$CONFIG"
 
 inotifywait -qm --format '%f' -e create "$HOME" | grep --line-buffered -x -f "$WATCH_FILES" | while read file; do
-        rm -rf "$HOME/$file"
+        before_rm "$file" && rm -rf "$HOME/$file"
         #echo "$(date +"%F %R") :: Deleted $HOME/$file" >> $LOG
-        action "$HOME/$file" &
 done

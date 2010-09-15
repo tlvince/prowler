@@ -17,12 +17,26 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-WATCH_FILES="${XDG_CONFIG_HOME:-"$HOME/.config"}/${0##*/}/badfiles" # Bash-ism
+CONF_DIR="${XDG_CONFIG_HOME:-"$HOME/.config"}/prowler"
+WATCH_FILES="$CONF_DIR/watchfiles"
+CONFIG="$CONF_DIR/config"
 #LOG="${XDG_CACHE_HOME:-"$HOME/.cache"}/${0##*/}.log"
+
+##
+# User definable action when inotify event occurs.
+# Override in $CONFIG
+#
+action()
+{
+    return
+}
+
+[[ -f "$CONFIG" ]] && . "$CONFIG"
 
 inotifywait -qm --format '%f' -e create "$HOME" | while read file; do
     if $(grep -Fq "$file" "$WATCH_FILES"); then
         rm -rf "$HOME/$file"
         #echo "$(date +"%F %R") :: Deleted $HOME/$file" >> $LOG
+        action "$HOME/$file" &
     fi
 done

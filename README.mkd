@@ -14,13 +14,13 @@ Setup
 
 1. Create a *watchfiles* file containing the files and directories that you want
    to be tracked:
-   
-        $ echo Desktop >> ~/.config/prowler/watchfiles
+
+        $ echo Desktop >> ${XDG_CONFIG_HOME:-"$HOME/.config"}/prowler/watchfiles
 
 2. Before running `prowler` for the first time, make sure the *watchfiles* are
    already deleted:
 
-        $ rm -rf ~/`cat ~/.config/prowler/watchfiles`
+        $ rm -rf ~/`cat ${XDG_CONFIG_HOME:-"$HOME/.config"}/prowler/watchfiles`
 
 3. Run `prowler`
 

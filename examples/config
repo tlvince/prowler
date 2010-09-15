@@ -7,3 +7,5 @@ before_rm()
 {
     zenity --info --text="inotify event caught for:\n\n$1"
 }
+
+LOG=1

@@ -18,9 +18,9 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 CONF_DIR="${XDG_CONFIG_HOME:-"$HOME/.config"}/prowler"
+DATA_DIR="${XDG_DATA_HOME:-"$HOME/.local/share"}/prowler"
 WATCH_FILES="$CONF_DIR/watchfiles"
 CONFIG="$CONF_DIR/config"
-#LOG="${XDG_CACHE_HOME:-"$HOME/.cache"}/prowler.log"
 
 ##
 # User definable action when inotify event occurs.
@@ -31,9 +31,25 @@ before_rm ()
     return
 }
 
+LOG=0
 [ -f "$CONFIG" ] && . "$CONFIG"
 
+LOG_FILE="${LOG_FILE:-"$DATA_DIR/prowler.log"}"
+
+[ "$LOG" != '0' ] && mkdir -p "$(dirname "$LOG_FILE")" 2>/dev/null
+
 inotifywait -qm --format '%f' -e create "$HOME" | grep --line-buffered -x -f "$WATCH_FILES" | while read file; do
-        before_rm "$file" && rm -rf "$HOME/$file"
-        #echo "$(date +"%F %R") :: Deleted $HOME/$file" >> $LOG
+        prefix="$(date +'%F %R') :: $HOME/$file "
+	if before_rm "$file"
+	then
+		if rm -rf "$HOME/$file"
+		then
+			[ "$LOG" != '0' ] && echo "$prefix deleted" >> $LOG_FILE
+		else
+			[ "$LOG" != '0' ] && echo "$prefix delete ERROR, rm returned $?" >> $LOG_FILE
+		fi
+	else
+		[ "$LOG" != '0' ] && echo "$prefix delete skipped, before_rm returned $?" >> $LOG_FILE
+	fi
+
 done

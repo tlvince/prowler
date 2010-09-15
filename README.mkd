@@ -38,6 +38,9 @@ Setup
 	The call to this function is synchronous,
 	and if you don't return 0 the rm will abort.
 
+5. `LOG` and `LOG_FILE` settings in the config toggle logging,
+   and set the logfile location, respectively.
+
 In the `examples` directory, you'll find a sample config and watchfiles file.
 
   [prowler]: http://www.tlvince.com/linux/prowler-home-cleaner/

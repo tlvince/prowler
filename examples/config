@@ -1,0 +1,9 @@
+##
+# User definable action when inotify event occurs.
+#
+# @param $1 string  The path to a triggering file.
+#
+action()
+{
+    zenity --info --text="inotify event caught from:\n\n$1"
+}

@@ -36,7 +36,7 @@ LOG=0
 
 LOG_FILE="${LOG_FILE:-"$DATA_DIR/prowler.log"}"
 
-[ "$LOG" != '0' ] && mkdir -p "$(dirname "$LOG_FILE")" 2>/dev/null
+[ "$LOG" != '0' ] && mkdir -p "$(dirname "$LOG_FILE")"
 
 inotifywait -qm --format '%f' -e create "$HOME" | grep --line-buffered -x -f "$WATCH_FILES" | while read file; do
         prefix="$(date +'%F %R') :: $HOME/$file "

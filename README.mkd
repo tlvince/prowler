@@ -31,12 +31,12 @@ Setup
 
 4. Optional `before_rm` hook:
 
-	$ EDITOR ${XDG_CONFIG_HOME:-"$HOME/.config"}/prowler/config
+        $ $EDITOR ${XDG_CONFIG_HOME:-"$HOME/.config"}/prowler/config
 
-	By defining a `before_rm` function you can inform yourself before
-	the actual removal takes place or allow yourself to intervene.
-	The call to this function is synchronous,
-	and if you don't return 0 the rm will abort.
+    By defining a `before_rm` function you can inform yourself before
+    the actual removal takes place or allow yourself to intervene.
+    The call to this function is synchronous,
+    and if you don't return 0 the rm will abort.
 
 5. `LOG` and `LOG_FILE` settings in the config toggle logging,
    and set the logfile location, respectively.

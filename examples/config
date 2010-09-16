@@ -1,11 +1,16 @@
+# Set to 1 to enable logging
+LOG=1
+
+# Specify a path for the log file, otherwise default to:
+#   ${XDG_CACHE_HOME:-"$HOME/.cache"}/prowler/prowler.log
+LOG_FILE=
+
 ##
 # User definable action when inotify event occurs.
 #
-# @param $1 string  The path to a triggering file, relative to home
+# @param $1 string  The path to a triggering file.
 #
 before_rm()
 {
-    zenity --warning --text="inotify event caught for:\n\n$1\nPress Esc to abort, OK to continue"
+    zenity --question --text="prowler caught an inotify event.\n\nDelete \"$1\"?"
 }
-
-LOG=1

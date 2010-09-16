@@ -2,7 +2,8 @@
 #
 # prowler: delete unwanted files that otherwise pollute $HOME
 #
-# Copyright 2010 Tom Vincent <http://www.tlvince.com/>
+# Copyright 2010 Tom Vincent <http://www.tlvince.com/contact/>
+# Copyright 2010 Dieter Plaetinck <dieter@plaetinck.be>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -21,35 +22,36 @@ CONF_DIR="${XDG_CONFIG_HOME:-"$HOME/.config"}/prowler"
 CACHE_DIR="${XDG_CACHE_HOME:-"$HOME/.cache"}/prowler"
 WATCH_FILES="$CONF_DIR/watchfiles"
 CONFIG="$CONF_DIR/config"
+LOG=0
 
 ##
 # User definable action when inotify event occurs.
 # Override in $CONFIG
 #
-before_rm ()
+before_rm()
 {
     return
 }
 
-LOG=0
 [ -f "$CONFIG" ] && . "$CONFIG"
 
 LOG_FILE="${LOG_FILE:-"$CACHE_DIR/prowler.log"}"
-
 [ "$LOG" != '0' ] && mkdir -p "$(dirname "$LOG_FILE")"
 
-inotifywait -qm --format '%f' -e create "$HOME" | grep --line-buffered -x -f "$WATCH_FILES" | while read file; do
-        prefix="$(date +'%F %R') :: $HOME/$file "
-	if before_rm "$file"
-	then
-		if rm -rf "$HOME/$file"
-		then
-			[ "$LOG" != '0' ] && echo "$prefix deleted" >> $LOG_FILE
+inotifywait -qm --format '%f' -e create "$HOME" | \
+    grep --line-buffered -x -f "$WATCH_FILES" | while read file; do
+
+    prefix="$(date +'%F %R') :: $HOME/$file -"
+    if before_rm "$HOME/$file"; then
+        if rm -rf "$HOME/$file"; then
+		    [ "$LOG" != '0' ] && echo "$prefix deleted" >> "$LOG_FILE"
 		else
-			[ "$LOG" != '0' ] && echo "$prefix delete ERROR, rm returned $?" >> $LOG_FILE
-		fi
-	else
-		[ "$LOG" != '0' ] && echo "$prefix delete skipped, before_rm returned $?" >> $LOG_FILE
-	fi
+		    [ "$LOG" != '0' ] && \
+                echo "$prefix delete ERROR, rm returned $?" >> "$LOG_FILE"
+	    fi
+    else
+        [ "$LOG" != '0' ] && \
+            echo "$prefix delete skipped, before_rm returned $?" >> "$LOG_FILE"
+    fi
 
 done

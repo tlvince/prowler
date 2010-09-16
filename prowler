@@ -18,7 +18,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 CONF_DIR="${XDG_CONFIG_HOME:-"$HOME/.config"}/prowler"
-DATA_DIR="${XDG_DATA_HOME:-"$HOME/.local/share"}/prowler"
+CACHE_DIR="${XDG_CACHE_HOME:-"$HOME/.cache"}/prowler"
 WATCH_FILES="$CONF_DIR/watchfiles"
 CONFIG="$CONF_DIR/config"
 
@@ -34,7 +34,7 @@ before_rm ()
 LOG=0
 [ -f "$CONFIG" ] && . "$CONFIG"
 
-LOG_FILE="${LOG_FILE:-"$DATA_DIR/prowler.log"}"
+LOG_FILE="${LOG_FILE:-"$CACHE_DIR/prowler.log"}"
 
 [ "$LOG" != '0' ] && mkdir -p "$(dirname "$LOG_FILE")"
 

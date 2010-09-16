@@ -5,7 +5,7 @@
 #
 before_rm()
 {
-    zenity --info --text="inotify event caught for:\n\n$1"
+    zenity --warning --text="inotify event caught for:\n\n$1\nPress Esc to abort, OK to continue"
 }
 
 LOG=1
